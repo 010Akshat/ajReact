@@ -1,11 +1,14 @@
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { removeTodo } from "../features/todo/todoSlice";
-
-function Todos(){
+import { removeTodo,updateTodo } from "../features/todo/todoSlice";
+function Todos({setInput, isUpdating , setisUpdating}){
     const todos = useSelector((state)=>state.todos)
     const dispatch = useDispatch()
-
+    const updateToDo = (todo)=>{
+      setInput(todo.text)
+      setisUpdating(true)
+      dispatch(removeTodo(todo.id))
+    }
     return(
         <>
         <div>Todos</div>
@@ -26,6 +29,27 @@ function Todos(){
             key={todo.id}
           >
             <div className='text-white'>{todo.text}</div>
+            <div>
+            <button
+             onClick={()=>updateToDo(todo)}    
+             className="text-white bg-green-500 border-0 py-1 px-4 focus:outline-none hover:bg-green-600 rounded text-md"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                strokeWidth={1.5}
+                stroke="currentColor"
+                className="w-6 h-6"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M15.232 5.232l3.536 3.536-9.768 9.768a1.5 1.5 0 01-.848.424l-3 0.5a0.75 0.75 0 01-.868-.868l.5-3a1.5 1.5 0 01.424-.848l9.768-9.768zm0 0L17.5 2.964a1.5 1.5 0 012.121 0l1.415 1.415a1.5 1.5 0 010 2.121l-2.268 2.268"
+                />
+              </svg>
+            </button>
+            "    "
             <button
              onClick={() => dispatch(removeTodo(todo.id))}
               className="text-white bg-red-500 border-0 py-1 px-4 focus:outline-none hover:bg-red-600 rounded text-md"
@@ -45,6 +69,7 @@ function Todos(){
                 />
               </svg>
             </button>
+            </div>
           </li>
         ))}
       </ul>
